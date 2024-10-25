@@ -12,39 +12,25 @@ const choreStyles = StyleSheet.create({
   input: {
     height: 40,
     borderColor: 'gray',
+    fontSize: 16,
+    backgroundColor: 'white',
     borderWidth: 1,
+    borderRadius: 10,
+    height: 50,
     marginVertical: 10,
     paddingHorizontal: 10,
     width: '100%',
     justifyContent: 'center',
+    borderColor: '#ddd',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
   },
   dateText: {
     fontSize: 16,
     color: 'gray',
-  },
-  assignmentList: {
-    marginTop: 20,
-    width: '100%',
-    maxHeight: 200,
-  },
-  assignmentContainer: {
-    marginBottom: 20,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginVertical: 10,
-    paddingHorizontal: 10,
-    width: '100%',
-  },
-  assignmentLabel: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  assignmentText: {
-    fontSize: 18,
-    color: 'blue',
-    marginBottom: 5,
   },
   button: {
     alignItems: 'center',
@@ -65,26 +51,32 @@ const choreStyles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Avenir',
   },
-    popupContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
-    },
-    popup: {
-      backgroundColor: 'white',
-      padding: 20,
-      borderRadius: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'row',
-    },
-    popupText: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: 'green',
-      marginLeft: 10,
-    },
-  });
+  title: { 
+    fontSize: 24,        
+    fontWeight: 'bold', 
+    color: '#1A2FAE',   
+    marginBottom: 20,    
+  },
+  popupContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+  },
+  popup: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  popupText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'green',
+    marginLeft: 10,
+  },
+});
 
 export default choreStyles;

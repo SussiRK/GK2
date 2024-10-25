@@ -97,6 +97,9 @@ export default function HomeScreen() {
           </ScrollView>
         </View>
 
+        {/* Add "Find chores" text above the input field */}
+        <Text style={globalStyles.choresTitle}>Find chores</Text>
+
         <TextInput
           style={globalStyles.input}
           placeholder="Enter person's name"
@@ -107,6 +110,30 @@ export default function HomeScreen() {
         <TouchableOpacity style={globalStyles.button} onPress={filterChoresByPerson}>
           <Text style={globalStyles.text}>Find Chores</Text>
         </TouchableOpacity>
+
+        {/* Display Filtered Chores */}
+        {filteredChores.length > 0 && (
+          <View style={globalStyles.choresSection}>
+            <Text style={globalStyles.choresTitle}>Filtered chores</Text>
+            <ScrollView style={globalStyles.choresList}>
+              {filteredChores.map((chore) => (
+                <View key={chore.id} style={globalStyles.choreItem}>
+                  <View style={globalStyles.choreInfo}>
+                    <Ionicons name="clipboard-outline" size={24} color="black" style={globalStyles.icon} />
+                    <View>
+                      <Text style={globalStyles.choreName}>{chore.chore}</Text>
+                      <View style={globalStyles.choreDeadlineContainer}>
+                        <Ionicons name="time-outline" size={20} color="gray" style={globalStyles.icon} />
+                        <Text style={globalStyles.deadlineText}>{chore.deadline}</Text>
+                      </View>
+                    </View>
+                  </View>
+                  {/* Remove delete and checkmark buttons here */}
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        )}
 
         <StatusBar style="auto" />
       </ScrollView>

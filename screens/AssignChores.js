@@ -32,9 +32,9 @@ export default function AssignChores({ navigation }) {
       set(newChoreRef, choreData)
         .then(() => {
           setUploading(false);
-          setShowPopup(true); // Show the popup
-          setTimeout(() => {
-            setShowPopup(false); // Hide the popup after 2 seconds
+          setShowPopup(true); 
+          setTimeout(() => { 
+            setShowPopup(false); 
           }, 2000);
         })
         .catch((error) => {
@@ -58,7 +58,7 @@ export default function AssignChores({ navigation }) {
 
   return (
     <View style={choreStyles.container}>
-      <Text>Assign a chore</Text>
+      <Text style={choreStyles.title}>Assign a chore</Text> 
 
       <TextInput
         style={choreStyles.input}
