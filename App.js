@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import AssignChores from './screens/AssignChores';
-// import ChatScreen from './screens/ChatScreen';
+import ChatScreen from './screens/ChatScreen';
 import CalendarScreen from './screens/CalendarScreen';
 import { getApps, initializeApp } from "firebase/app"; 
 
@@ -51,8 +51,8 @@ export default function App() {
               iconName = 'list'
             } else if (route.name === 'Calendar') {
               iconName = 'calendar'
-            // } else if (route.name === 'Chat') {
-            //   iconName = 'chatbubble-ellipses'
+            } else if (route.name === 'Chat') {
+               iconName = 'chatbubble-ellipses'
             } else if (route.name === 'Settings') {
               iconName = 'cog'
             }
@@ -66,7 +66,7 @@ export default function App() {
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Calendar" component={CalendarScreen} />
         <Tab.Screen name="Chores" component={AssignChores} />
-        {/* <Tab.Screen name="Chat" component={ChatScreen} /> */}
+        <Tab.Screen name="Chat" component={ChatScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
