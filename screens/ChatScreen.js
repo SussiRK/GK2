@@ -8,14 +8,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ChatFaceData from '../services/ChatDataFace';
 import SendMessage from '../services/Request';
 
+// Standard chatbot avatar
 CHAT_BOT_FACE = 'https://res.cloudinary.com/dknvsbuyy/image/upload/v1685678135/chat_1_c7eda483e3.png';
 
+// Hovedkomponenten for chat-skærmen
 export default function ChatScreen() {
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [chatFaceColor, setChatFaceColor] = useState('#671ddf'); // Default color
+  const [messages, setMessages] = useState([]); // State til chatbeskeder
+  const [loading, setLoading] = useState(false); // State til at vise "is typing"-indikator
+  const [chatFaceColor, setChatFaceColor] = useState('#671ddf'); // Standard farve for chat-bobler
 
-  // Define conversation history
+  // Standard samtalehistorik
   const conversationHistory = [
     {
       role: 'system',
@@ -25,18 +27,20 @@ export default function ChatScreen() {
     { role: 'assistant', content: 'Hello, I am your assistant. How can I help you?' },
   ];
 
-  // Handle selected chatbot and set initial message
+  // Effekt der kører én gang ved komponentstart, for at tjekke valg af chatbot
   useEffect(() => {
     checkFaceId();
   }, []);
 
+  // Henter den gemte chatbot-id og sætter initial besked samt farve baseret på brugerens valg
   const checkFaceId = async () => {
     const id = await AsyncStorage.getItem('chatFaceId');
-    const selectedChatBot = id ? ChatFaceData[id] : ChatFaceData[0]; // Default chatbot if not found
+    const selectedChatBot = id ? ChatFaceData[id] : ChatFaceData[0]; // Standard chatbot hvis ingen valgt
 
-    CHAT_BOT_FACE = selectedChatBot.image;
-    setChatFaceColor(selectedChatBot.primary); // Set color from ChatFaceData
+    CHAT_BOT_FACE = selectedChatBot.image; // Sætter chatbot-avatar
+    setChatFaceColor(selectedChatBot.primary); // Sætter farven på chat-boblerne
 
+    // Initialiserer den første besked i chatten
     setMessages([
       {
         _id: 1,
@@ -51,21 +55,22 @@ export default function ChatScreen() {
     ]);
   };
 
-  // Handle chat messages
+  // Håndterer afsendelse af brugerbeskeder
   const onSend = useCallback((messages = []) => {
     setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
     if (messages[0].text) {
-      getBardResp(messages[0].text);
+      getBardResp(messages[0].text); // Kald API for chatbot svar
     }
   }, []);
 
-  // Handle API call and BOT response
+  // Henter chatbot-svar via API-kald
   const getBardResp = (msg) => {
-    setLoading(true);
+    setLoading(true); // Viser "is typing"-indikator
 
     const userMessage = { role: 'user', content: msg };
-    conversationHistory.push(userMessage);
+    conversationHistory.push(userMessage); // Tilføjer brugerens besked til samtalehistorik
 
+    // Kalder API for at få chatbot-svar
     SendMessage(conversationHistory)
       .then((response) => {
         if (response.content) {
@@ -80,7 +85,7 @@ export default function ChatScreen() {
               avatar: CHAT_BOT_FACE,
             },
           };
-          conversationHistory.push({ role: 'assistant', content: response.content });
+          conversationHistory.push({ role: 'assistant', content: response.content }); // Tilføjer svar til historik
           setMessages((previousMessages) => GiftedChat.append(previousMessages, chatAIResp));
         } else {
           setLoading(false);
@@ -103,7 +108,7 @@ export default function ChatScreen() {
       });
   };
 
-  // Custom Bubble
+  // Tilpasset boble-design
   const renderBubble = (props) => {
     return (
       <Bubble
@@ -122,7 +127,7 @@ export default function ChatScreen() {
     );
   };
 
-  // Custom Input Toolbar
+  // Tilpasset input-felt
   const renderInputToolbar = (props) => {
     return (
       <InputToolbar
@@ -136,7 +141,7 @@ export default function ChatScreen() {
     );
   };
 
-  // Custom Send Button
+  // Tilpasset send-knap
   const renderSend = (props) => {
     return (
       <Send {...props}>
@@ -147,6 +152,7 @@ export default function ChatScreen() {
     );
   };
 
+  // Returnerer hele chat-interfacet
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: chatFaceColor }}> 
       <View style={{ flex: 1, backgroundColor: '#fff' }}>

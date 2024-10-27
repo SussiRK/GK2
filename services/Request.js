@@ -1,17 +1,17 @@
 import OpenAI from "openai/index.mjs";
-import openaiKey from "../env";
+import openaiKey from "../env"; // Importerer API-nøglen fra miljøfil
 
-// Create a new instance of the OpenAI class
+// Opretter en ny instans af OpenAI-klassen med API-nøglen
 const openai = new OpenAI({apiKey: openaiKey });
-// Create a function that sends a message to the OpenAI API
+// Sender forespørgsel til OpenAI's chat-model med beskeder fra messageArray
 export default async function SendMessage(messageArray) {
     const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: messageArray,
+        model: "gpt-4o-mini", 
+        messages: messageArray, // Sender brugerens samtalehistorik som input
     });
 
-    // Extract the AI's reply from the response
+    // Udtrækker AI'ens svar fra svaret (første svar i responsen)
     const result = response.choices[0]?.message?.content || "";
-    // Return the AI's reply
+    // Returnerer AI'ens svar med rolle og indhold
     return { role: "assistant", content: result };
 }

@@ -1,4 +1,3 @@
-// ChoreStyles.js
 import { StyleSheet } from 'react-native';
 
 const choreStyles = StyleSheet.create({

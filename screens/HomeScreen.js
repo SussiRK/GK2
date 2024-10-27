@@ -5,11 +5,14 @@ import { getDatabase, ref, onValue, remove } from 'firebase/database';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import globalStyles from '../styles/HomeStyles'; 
 
+// Hovedkomponent for hjemmeskærmen
 export default function HomeScreen() {
+  // State til brugerinput, opgaveliste og filtrerede opgaver
   const [personName, setPersonName] = useState('');
   const [chores, setChores] = useState([]);
   const [filteredChores, setFilteredChores] = useState([]);
 
+  // Funktion til at hente opgaver fra Firebase-databasen
   const fetchChores = () => {
     const db = getDatabase();
     const choresRef = ref(db, 'chores');
@@ -17,41 +20,45 @@ export default function HomeScreen() {
     onValue(choresRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        const choresArray = Object.keys(data).map((key) => ({
+        const choresArray = Object.keys(data).map((key) => ({ // Konverterer objekter til array og gemmer dem i state
           id: key,
           ...data[key],
         }));
         setChores(choresArray);
       } else {
-        setChores([]);
+        setChores([]); // Tømmer opgavelisten, hvis der ingen data er
       }
     });
   };
 
+  // Filtrerer opgaver efter det indtastede navn
   const filterChoresByPerson = () => {
     const filtered = chores.filter((chore) =>
       chore.person.toLowerCase() === personName.toLowerCase()
     );
-    setFilteredChores(filtered);
+    setFilteredChores(filtered); // Opdaterer filtrerede opgaver
   };
 
+  // Funktion til at slette en opgave fra databasen
   const handleDeleteChore = (choreId) => {
     const db = getDatabase();
     const choreRef = ref(db, `chores/${choreId}`);
     remove(choreRef)
       .then(() => {
         console.log('Chore deleted successfully');
-        fetchChores();
+        fetchChores(); // Opdaterer opgavelisten efter sletning
       })
       .catch((error) => {
         console.error('Error deleting chore: ', error);
       });
   };
 
+  // Henter opgaverne ved komponentens første render
   useEffect(() => {
     fetchChores();
   }, []);
 
+   // Returnerer hele skærmens layout og funktioner
   return (
     <SafeAreaView style={globalStyles.container}>
       <ScrollView contentContainerStyle={globalStyles.scrollViewContent}>
@@ -68,6 +75,7 @@ export default function HomeScreen() {
           <ScrollView style={globalStyles.choresList}>
             {chores.length > 0 ? (
               chores.map((chore) => (
+                // Viser opgaveliste, hvis der er opgaver
                 <View key={chore.id} style={globalStyles.choreItem}>
                   <View style={globalStyles.choreInfo}>
                     <Ionicons name="clipboard-outline" size={24} color="black" style={globalStyles.icon} />
@@ -79,6 +87,7 @@ export default function HomeScreen() {
                       </View>
                     </View>
                   </View>
+                  {/* Handling af sletning og "opgave udført" */}
                   <View style={globalStyles.choreActions}>
                     <TouchableOpacity onPress={() => handleDeleteChore(chore.id)}>
                       <Ionicons name="checkmark-circle" size={24} color="green" style={globalStyles.actionIcon} />
@@ -90,6 +99,7 @@ export default function HomeScreen() {
                 </View>
               ))
             ) : (
+              // Viser besked, hvis der ingen opgaver er
               <View style={globalStyles.noChoresContainer}>
                 <Text style={globalStyles.noChoresText}>No chores assigned yet</Text>
               </View>
@@ -97,7 +107,7 @@ export default function HomeScreen() {
           </ScrollView>
         </View>
 
-        {/* Add "Find chores" text above the input field */}
+        {/* Find opgaver efter navn */}
         <Text style={globalStyles.choresTitle}>Find chores</Text>
 
         <TextInput
@@ -111,7 +121,7 @@ export default function HomeScreen() {
           <Text style={globalStyles.text}>Find Chores</Text>
         </TouchableOpacity>
 
-        {/* Display Filtered Chores */}
+        {/* Viser filtrerede opgaver, hvis der er resultater */}
         {filteredChores.length > 0 && (
           <View style={globalStyles.choresSection}>
             <Text style={globalStyles.choresTitle}>Filtered chores</Text>
@@ -128,7 +138,7 @@ export default function HomeScreen() {
                       </View>
                     </View>
                   </View>
-                  {/* Remove delete and checkmark buttons here */}
+                  {/* Skjuler sletning og "udført" knapper for filtrerede opgaver */}
                 </View>
               ))}
             </ScrollView>

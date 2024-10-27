@@ -1,4 +1,4 @@
-//ChatBot Data
+// Definerer data for forskellige chatbot-karakterer
 export default chatFaceData=[
     {
         id:1,
